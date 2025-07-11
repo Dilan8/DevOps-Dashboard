@@ -9,6 +9,16 @@
 .env.local
 .env.*.local
 
+# Terraform files
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfstate
+terraform.tfstate.backup
+*.tfvars
+*.tfvars.json
+.terraform.lock.hcl
+
 # system files
 .DS_Store
 Thumbs.db
