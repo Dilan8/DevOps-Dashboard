@@ -82,7 +82,7 @@ resource "aws_codebuild_project" "react_build" {
 
   source {
     type      = "CODEPIPELINE"
-    buildspec = "buildspec/buildspec.yml"
+    buildspec = "buildspec.yml"
   }
 
   environment {
