@@ -3,27 +3,28 @@ version: 0.2
 phases:
   pre_build:
     commands:
-      - echo Logging in to Amazon ECR...
+      - echo "Logging in to Amazon ECR..."
       - aws --version
-      - ACCOUNT_ID=$(aws sts get-caller-identity --query "Account" --output text)
+      - echo "Getting AWS Account ID"
+      - ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
       - IMAGE_REPO_NAME=$REPOSITORY_NAME
       - IMAGE_TAG=latest
       - REGION=$REGION
-      - ECR_REGISTRY=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
-      - echo Logging into ECR: $ECR_REGISTRY
+      - ECR_REGISTRY="$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com"
+      - echo "Logging into ECR:$ECR_REGISTRY"
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
 
   build:
     commands:
-      - echo Building Docker image...
+      - echo "Building Docker image..."
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG .
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $ECR_REGISTRY/$IMAGE_REPO_NAME:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo Pushing Docker image to ECR...
+      - echo "Pushing Docker image to ECR..."
       - docker push $ECR_REGISTRY/$IMAGE_REPO_NAME:$IMAGE_TAG
-      - echo Image successfully pushed!
+      - echo "Image successfully pushed!"
 
 artifacts:
   files:
