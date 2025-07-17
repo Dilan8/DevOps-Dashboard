@@ -17,3 +17,14 @@ terraform {
     encrypt        = true
   }
 }
+
+module "codepipeline" {
+  source         = "./modules/codepipeline"
+  project_name   = "react-app"
+  aws_region     = "us-east-1"
+  github_owner   = "Dilan8"
+  github_repo    = "DevOps-Dashboard"
+  github_branch  = "WHR_01_UI_In"
+  github_token   = var.github_token
+  ecr_repository = var.repository_name
+}
