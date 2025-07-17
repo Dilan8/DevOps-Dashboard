@@ -3,6 +3,9 @@ version: 0.2
 phases:
   pre_build:
     commands:
+      - echo "Logging into DockerHub to avoid rate limit..."
+      - echo "$DOCKERHUB_PASSWORD" | docker login -u "$DOCKERHUB_USERNAME" --password-stdin
+
       - echo "Logging in to Amazon ECR..."
       - aws --version
       - echo "Getting AWS Account ID"
@@ -11,7 +14,7 @@ phases:
       - IMAGE_TAG=latest
       - REGION=$REGION
       - ECR_REGISTRY="$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com"
-      - echo "Logging into ECR:$ECR_REGISTRY"
+      - echo "Logging into ECR: $ECR_REGISTRY"
       - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
 
   build:
