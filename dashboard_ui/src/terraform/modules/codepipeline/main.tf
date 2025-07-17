@@ -45,6 +45,30 @@ resource "aws_iam_role_policy_attachment" "codebuild_logs_attachment" {
   policy_arn = aws_iam_policy.codebuild_logs_policy.arn
 }
 
+resource "aws_iam_policy" "codebuild_s3_policy" {
+  name        = "CodeBuildS3AccessPolicy"
+  description = "Allows CodeBuild to access S3 bucket for pipeline artifacts"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "s3:GetObject",
+          "s3:GetObjectVersion",
+          "s3:PutObject"
+        ],
+        Resource = "arn:aws:s3:::react-app-pipeline-artifacts-7ce91b9e/*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_s3_attachment" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = aws_iam_policy.codebuild_s3_policy.arn
+}
+
 
 resource "aws_iam_role_policy_attachment" "codebuild_attach" {
   role       = aws_iam_role.codebuild_role.name
