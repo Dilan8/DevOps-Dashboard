@@ -11,9 +11,7 @@ phases:
       - REGION=$REGION
       - ECR_REGISTRY=$ACCOUNT_ID.dkr.ecr.$REGION.amazonaws.com
       - echo Logging into ECR: $ECR_REGISTRY
-      - >
-        aws ecr get-login-password --region $REGION |
-        docker login --username AWS --password-stdin $ECR_REGISTRY
+      - aws ecr get-login-password --region $REGION | docker login --username AWS --password-stdin $ECR_REGISTRY
 
   build:
     commands:
