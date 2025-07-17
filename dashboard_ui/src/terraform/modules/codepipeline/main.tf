@@ -21,6 +21,31 @@ data "aws_iam_policy_document" "codebuild_assume" {
   }
 }
 
+resource "aws_iam_policy" "codebuild_logs_policy" {
+  name        = "CodeBuildCloudWatchLogsPolicy"
+  description = "Allows CodeBuild to write to CloudWatch Logs"
+  policy      = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+      {
+        Effect = "Allow",
+        Action = [
+          "logs:CreateLogGroup",
+          "logs:CreateLogStream",
+          "logs:PutLogEvents"
+        ],
+        Resource = "*"
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "codebuild_logs_attachment" {
+  role       = aws_iam_role.codebuild_role.name
+  policy_arn = aws_iam_policy.codebuild_logs_policy.arn
+}
+
+
 resource "aws_iam_role_policy_attachment" "codebuild_attach" {
   role       = aws_iam_role.codebuild_role.name
   policy_arn = "arn:aws:iam::aws:policy/AWSCodeBuildDeveloperAccess"
