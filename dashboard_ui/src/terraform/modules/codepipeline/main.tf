@@ -106,12 +106,22 @@ resource "aws_codebuild_project" "react_build" {
       value = var.aws_region
     }
 
+    environment_variable {
+      name  = "DOCKERHUB_USERNAME"
+      value = var.dockerhub_username
+    }
+
+    environment_variable {
+      name  = "DOCKERHUB_PASSWORD"
+      value = var.dockerhub_password
+    }
   }
 
   artifacts {
     type = "CODEPIPELINE"
   }
 }
+
 
 resource "aws_iam_role" "codepipeline_role" {
   name = "${var.project_name}-pipeline-role"

@@ -27,4 +27,6 @@ module "codepipeline" {
   github_branch  = "WHR_01_UI_In"
   github_token   = var.github_token
   ecr_repository = var.repository_name
+  dockerhub_username = var.dockerhub_username
+  dockerhub_password = var.dockerhub_password
 }
